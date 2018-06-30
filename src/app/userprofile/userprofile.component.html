@@ -1,0 +1,24 @@
+<!-- Titlebar
+================================================== -->
+<div id="titlebar" class="gradient">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="user-profile-titlebar">
+          <div class="user-profile-avatar">
+            <!--<img src="images/user-profile-avatar.jpg">-->
+            <img src='data:image/png;base64,{{ profiles[0].image }}' alt=""/>
+          </div>
+          <div class="user-profile-name">
+            <h2>{{ profiles[0].firstname }} {{ profiles[0].lastname }} </h2>
+            <div class="star-rating" attr.data-rating="{{ avgRating | async }}">
+              <div class="rating-counter">
+                <a href="#listing-reviews">({{ reviewCount }} reviews)</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

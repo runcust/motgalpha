@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked } from '@angular/core';
 import { Profile } from '../core/models/profile.model';
 import { ProfileService } from '../core/services/profile.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +13,7 @@ import * as $ from 'jquery';
   templateUrl: './userprofile.component.html',
   styleUrls: ['./userprofile.component.css']
 })
-export class UserprofileComponent implements OnInit, AfterViewInit {
+export class UserprofileComponent implements OnInit {
 
   profiles: Profile[] | {};
   avgRating: any;
@@ -27,10 +27,6 @@ export class UserprofileComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    // this.profileService.getProfile('seaviewpebbles@gmail.com').subscribe(profile => {
-    //   debugger;
-    // this.profiles = profile;
-    // });
     this.profileService.getProfiles().subscribe(profile => {
      this.profiles = profile;
     });
@@ -38,19 +34,16 @@ export class UserprofileComponent implements OnInit, AfterViewInit {
     this.reviews = this.reviewService.getReviews(userId);
 
     this.avgRating = this.reviews.map(arr => {
+      var avg;
       const ratings = arr.map(v => v.rating);
       this.reviewCount = ratings.length;
-      return ratings.length ? ratings.reduce((total, val) => total + val) / arr.length : 'not reviewed';
+      avg = ratings.length ? ratings.reduce((total, val) => total + val) / arr.length : 'not reviewed';
+      this.starRating(avg);
+      return avg;
     });
   }
 
-  ngAfterViewInit(): void {
-    this.numericalRating('.numerical-rating');
-    this.starRating('.star-rating');
-  }
-
   numericalRating(ratingElem) {
-debugger;
     $(ratingElem).each(function() {
       const dataRating = +$(this).attr('data-rating');
 
@@ -65,11 +58,10 @@ debugger;
     });
   }
 
-  starRating(ratingElem) {
-    debugger;
-   // $(ratingElem).each(function() {
-      const dataRating = this.avgRating; // +$(this).attr('data-rating');
-      console.log('dataRating: ' + dataRating);
+  starRating(dataRating) {
+    console.log('dataRating: ' + dataRating);
+    var starRatings = $('.star-rating');
+    $('.star-rating .star').remove();
       // Rating Stars Output
       function starsOutput(firstStar, secondStar, thirdStar, fourthStar, fifthStar) {
         return('' +
@@ -96,24 +88,23 @@ debugger;
 
       // Rules
           if (dataRating >= 4.75) {
-              $(this).append(fiveStars);
+              starRatings.append(fiveStars);
           } else if (dataRating >= 4.25) {
-              $(this).append(fourHalfStars);
+              starRatings.append(fourHalfStars);
           } else if (dataRating >= 3.75) {
-              $(this).append(fourStars);
+              starRatings.append(fourStars);
           } else if (dataRating >= 3.25) {
-              $(this).append(threeHalfStars);
+              starRatings.append(threeHalfStars);
           } else if (dataRating >= 2.75) {
-              $(this).append(threeStars);
+              starRatings.append(threeStars);
           } else if (dataRating >= 2.25) {
-              $(this).append(twoHalfStars);
+              starRatings.append(twoHalfStars);
           } else if (dataRating >= 1.75) {
-              $(this).append(twoStars);
+              starRatings.append(twoStars);
           } else if (dataRating >= 1.25) {
-              $(this).append(oneHalfStar);
+              starRatings.append(oneHalfStar);
           } else if (dataRating < 1.25) {
-              $(this).append(oneStar);
+              starRatings.append(oneStar);
           }
-    // });
   }
 }

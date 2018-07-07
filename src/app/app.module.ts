@@ -11,13 +11,15 @@ import { FooterComponent } from './shared/layout/footer/footer.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { environment } from '../environments/environment';
 import { ProfileService } from './core/services/profile.service';
+import { ReviewlistComponent } from './reviewlist/reviewlist.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    UserprofileComponent
+    UserprofileComponent,
+    ReviewlistComponent
   ],
   imports: [
     BrowserModule,
